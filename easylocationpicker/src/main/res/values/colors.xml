@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+
+    <color name="easylocation_white">#FFFFFF</color>
+    <color name="easylocation_white_alpha">#F2FFFFFF</color>
+    <color name="easylocation_soft_grey">#ECEEEF</color>
+    <color name="easylocation_mid_grey">#9199A1</color>
+    <color name="easylocation_strong_grey">#50545A</color>
+    <color name="easylocation_search_background">#0000</color>
+    <color name="quantum_vanillared500">#f44336</color>
+</resources>

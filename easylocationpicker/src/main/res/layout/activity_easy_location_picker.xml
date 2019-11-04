@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- search bar layout -->
+    <include
+        android:id="@+id/search_bar"
+        layout="@layout/include_card_view_search_bar" />
+
+
+    <ImageView
+        android:tint="@color/quantum_vanillared500"
+        android:onClick="text"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/easylocation_ic_current_place"
+        android:contentDescription="Current Location Marker" />
+
+    <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center"
+         android:layout_marginEnd="16dp"
+         android:layout_marginBottom="16dp"
+         android:src="@drawable/leku_ic_gps_lime"
+         app:tint="@color/colorPrimary"
+         app:backgroundTint="@color/leku_white"
+         app:elevation="2dp"
+         app:fabSize="mini"
+         app:rippleColor="@color/leku_soft_grey"
+         tools:background="@color/leku_white"
+         tools:ignore="elevation" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/leku_information_bottom_margin">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnFloatingActionLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/easylocation_ic_my_location"
+            app:tint="@color/colorPrimary"
+            app:backgroundTint="@color/easylocation_white"
+            app:elevation="2dp"
+            app:fabSize="normal"
+            app:rippleColor="@color/easylocation_soft_grey"
+            tools:background="@color/easylocation_white"
+            tools:ignore="elevation" />
+
+        <FrameLayout
+            android:id="@+id/location_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
+            android:visibility="visible"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/easylocation_adress_custom_background"
+                android:orientation="horizontal"
+                tools:ignore="UselessParent">
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/easylocation_layout_coordinates" />
+
+                    <!--<include layout="@layout/leku_layout_address" />-->
+
+                </LinearLayout>
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fabBtnAccept"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    app:tint="@color/easylocation_white"
+                    android:src="@drawable/easylocation_ic_check"
+                    app:backgroundTint="?colorPrimary"
+                    app:elevation="2dp"
+                    app:fabSize="normal"
+                    app:rippleColor="?colorPrimaryDark"
+                    tools:background="?colorPrimary"
+                    tools:ignore="elevation" />
+
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -36,7 +36,7 @@ public class SelectedLocation implements Parcelable {
         return selectedLatitude;
     }
 
-    public void setSelectedLatitude(double selectedLatitude) {
+    protected void setSelectedLatitude(double selectedLatitude) {
         this.selectedLatitude = selectedLatitude;
     }
 
@@ -44,7 +44,7 @@ public class SelectedLocation implements Parcelable {
         return selectedLongitude;
     }
 
-    public void setSelectedLongitude(double selectedLongitude) {
+    protected void setSelectedLongitude(double selectedLongitude) {
         this.selectedLongitude = selectedLongitude;
     }
 
@@ -52,7 +52,7 @@ public class SelectedLocation implements Parcelable {
         return selectedAddress;
     }
 
-    public void setSelectedAddress(String selectedAddress) {
+    protected void setSelectedAddress(String selectedAddress) {
         this.selectedAddress = selectedAddress;
     }
 
@@ -60,7 +60,7 @@ public class SelectedLocation implements Parcelable {
         return isGPSLocation;
     }
 
-    public void setGPSLocation(boolean GPSLocation) {
+    protected void setGPSLocation(boolean GPSLocation) {
         isGPSLocation = GPSLocation;
     }
 

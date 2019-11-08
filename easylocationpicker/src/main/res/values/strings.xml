@@ -8,6 +8,7 @@
     <string name="easylocation_no_geocoder_available">Service not available</string>
     <string name="easylocation_load_location_error">Something went wrong. Please try again.</string>
     <string name="easylocation_user_cancelled">User canceled operation</string>
+    <string name="easylocation_no_location">Location not available</string>
     <string name="easylocation_no_search_results">There are no results for your search</string>
     <string name="easylocation_network_resource">network</string>
     <string name="easylocation_unknown_location">unknown location</string>
@@ -24,4 +25,6 @@
     <string name="easylocation_invalid_lat_long_used">Lat/long are invalid</string>
     <string name="easylocation_no_address_found">No address found</string>
     <string name="easylocation_address_found">Address found!! :)</string>
+    <string name="easylocation_no_map_keys">No Maps API key found in manifest</string>
+    <string name="easylocation_empty_places_api_key">Places API key can\'t be empty</string>
 </resources>

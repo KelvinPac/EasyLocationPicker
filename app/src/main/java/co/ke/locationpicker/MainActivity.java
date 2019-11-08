@@ -9,8 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.loginext.easylocationpicker.EasyLocationCallbacks;
 import com.loginext.easylocationpicker.EasyLocation;
-import com.loginext.easylocationpicker.EasyLocationPickerActivity;
 import com.loginext.easylocationpicker.SelectedLocation;
 
 
@@ -36,15 +36,15 @@ public class MainActivity extends AppCompatActivity {
                         .showCurrentLocation(true)
                         .useGeoCoder(true)
                         .setResultOnBackPressed(false)
-                        .setCallbacks(new EasyLocation.Callbacks() {
+                        .setCallbacks(new EasyLocationCallbacks() {
                             @Override
-                            public void onSuccess(SelectedLocation selectedLocation) {
-                                Toast.makeText(MainActivity.this, selectedLocation.toString(), Toast.LENGTH_SHORT).show();
+                            public void onSuccess(SelectedLocation location) {
+                                Toast.makeText(MainActivity.this, location.toString(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
-                            public void onFailed(String kk) {
-                                Toast.makeText(MainActivity.this, kk, Toast.LENGTH_SHORT).show();
+                            public void onFailed(String reason) {
+                                Toast.makeText(MainActivity.this, reason, Toast.LENGTH_SHORT).show();
                             }
                         })
                         .build();

@@ -1,8 +1,6 @@
 package com.loginext.easylocationpicker;
 
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
@@ -38,6 +36,7 @@ import mumayank.com.airlocationlibrary.AirLocation;
 import static com.loginext.easylocationpicker.Constants.EXTRA_LOCATION_PICKER;
 import static com.loginext.easylocationpicker.Constants.EXTRA_LOCATION_RESULTS_FAILED;
 import static com.loginext.easylocationpicker.Constants.EXTRA_LOCATION_RESULTS_SUCCESS;
+import static com.loginext.easylocationpicker.DistanceCalculator.isGPSPosition;
 
 
 public class EasyLocationPickerActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -62,11 +61,13 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
     private FloatingActionButton floatingActionButtonLocation,fabBtnAccept;
     private TextView latitude, longitude, address, locationTitle;
     private LatLng midLatLng;
+    private Location myCurrentLocation;
     private ProgressBar progressBar;
+    private String currentAddress;
 
     //https://developer.android.com/training/location/display-address#java
     private AddressResultReceiver resultReceiver;
-    EasyLocation easyLocation;
+    private EasyLocation easyLocation;
 
 
     @Override
@@ -138,20 +139,14 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-
-                // Toast.makeText(EasyLocationPickerActivity.this, place.getAddress(), Toast.LENGTH_SHORT).show();
-
                 if (place.getLatLng() != null) {
-
                     newLocationSelected(place.getLatLng());
                 }
 
             }
 
             @Override
-            public void onError(Status status) {
+            public void onError(@NonNull Status status) {
                 // TODO: Handle the error.
                 Log.i(TAG, "An error occurred: " + status);
                 Toast.makeText(EasyLocationPickerActivity.this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
@@ -165,37 +160,6 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         }else {
             floatingActionButtonLocation.setVisibility(View.GONE);
         }
-
-
-       /* if (getMapsKey()){
-            showToast("Map key found");
-        }else {
-            showToast("No map key");
-        }*/
-    }
-
-    /*
-    * check if google maps key is available */
-    private boolean getMapsKey(){
-        try {
-            ApplicationInfo app = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-            Bundle bundle = app.metaData;
-
-            for (String key: bundle.keySet())
-            {
-                if (key.equals("com.google.android.geo.API_KEY")){
-                    Log.d("TEST","MAPS KEY FOUND");
-                    Log.d("TEST","MAPS KEY: "+bundle.getString("com.google.android.geo.API_KEY"));
-                    return true;
-                }
-            }
-
-
-        } catch (PackageManager.NameNotFoundException | NullPointerException e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 
     @Override
@@ -204,7 +168,7 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
             sendBackLocation(false);
         }else {
            // super.onBackPressed();
-           sendBackUserCancelledOperation();
+           sendBackUserCancelledOperation(getString(R.string.easylocation_user_cancelled));
         }
 
     }
@@ -218,10 +182,15 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
             //intent.putExtra(EXTRA_LONGITUDE, String.valueOf(midLatLng.longitude));
 
             SelectedLocation selectedLocation = new SelectedLocation();
-            selectedLocation.setSelectedAddress("");
+            selectedLocation.setSelectedAddress(currentAddress);
             selectedLocation.setSelectedLatitude(midLatLng.latitude);
             selectedLocation.setSelectedLongitude(midLatLng.longitude);
-            selectedLocation.setGPSLocation(false);
+            selectedLocation.setGPSLocation(isGPSPosition(midLatLng,myCurrentLocation));
+
+            //todo calculate distance from the 2 points
+            Log.i("LOC","current == "+myCurrentLocation.getLatitude() + " : "+myCurrentLocation.getLongitude());
+            Log.i("LOC","selecte == "+midLatLng.latitude + " : "+midLatLng.longitude);
+
 
             Intent intent = new Intent();
             intent.putExtra(EXTRA_LOCATION_RESULTS_SUCCESS,selectedLocation);
@@ -230,14 +199,19 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
 
         }else {
 
-           sendBackUserCancelledOperation();
+            if (userClicked){
+                sendBackUserCancelledOperation(getString(R.string.easylocation_no_location));
+            }else {
+                sendBackUserCancelledOperation(getString(R.string.easylocation_user_cancelled));
+            }
+
         }
 
     }
 
-    private void sendBackUserCancelledOperation() {
+    private void sendBackUserCancelledOperation(String reason) {
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_LOCATION_RESULTS_FAILED,getString(R.string.easylocation_user_cancelled));
+        intent.putExtra(EXTRA_LOCATION_RESULTS_FAILED,reason);
         setResult(RESULT_CANCELED, intent);
         finish();
     }
@@ -250,6 +224,7 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
                 // user location acquired
                 LatLng selectedPlace = new LatLng(location.getLatitude(), location.getLongitude());
                 newLocationSelected(selectedPlace);
+                myCurrentLocation = location;
             }
 
             @Override
@@ -265,10 +240,6 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
      * show new user location on map*/
     private void newLocationSelected(LatLng selectedPlace) {
         mMap.clear();
-        //Toast.makeText(EasyLocationPickerActivity.this, place.getLatLng().toString(), Toast.LENGTH_SHORT).show();
-
-        // mMap.addMarker(new MarkerOptions().position(selectedPlace).title("Place"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace,16));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 16));
     }
 
@@ -314,6 +285,9 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         mMap.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
             @Override
             public void onCameraMoveStarted(int i) {
+
+                //invalidate the previous address
+                currentAddress = null;
 
                 if (!easyLocation.isUseGeoCoder()){
                     latitude.setVisibility(View.GONE);
@@ -410,10 +384,10 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
             if (addressOutput == null) {
                 addressOutput = "";
             }
-            // displayAddressOutput(addressOutput);
 
-            // Show a toast message if an address was found.
+            // displayAddressOutput(addressOutput);
             if (resultCode == Constants.SUCCESS_RESULT) {
+                currentAddress = addressOutput;
                 displayAddressOutput(addressOutput);
             } else {
                 //show location coordinates

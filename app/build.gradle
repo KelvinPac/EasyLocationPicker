@@ -13,13 +13,8 @@ android {
     }
     buildTypes {
         release {
-            resValue('string', "PLACES_API_KEY", GOOGLE_API_KEY)
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-
-        debug{
-            resValue('string', "PLACES_API_KEY", GOOGLE_API_KEY)
         }
     }
 }

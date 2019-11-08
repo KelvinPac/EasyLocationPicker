@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, EasyLocationPickerActivity.class);
                 startActivityForResult(intent, EasyLocationPickerActivity.LOCATION_REQUEST_CODE);*/
 
-                easyLocation = new EasyLocation.Builder(MainActivity.this,getString(R.string.PLACES_API_KEY))
+                easyLocation = new EasyLocation.Builder(MainActivity.this,"<PLACES_API_KEY>")
                         //.placesApiKey(getString(R.string.PLACES_API_KEY))
                         .showCurrentLocation(true)
                         .useGeoCoder(true)

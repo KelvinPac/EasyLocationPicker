@@ -92,7 +92,31 @@ where LATEST_VERSION is [![](https://jitpack.io/v/KelvinPac/EasyLocationPicker.s
 This library fully supports Kotlin out of the box (because Kotlin is 100% interoperable)
 Hence the setup remains the same, and usage becomes:
 ```kotlin
-Code sample coming soon
+private var easyLocation: EasyLocation? = null
+
+...
+//open location picker
+easyLocation = EasyLocation.Builder(this,"<PLACES_API_KEY>")
+                    .useGeoCoder(true)
+                    .showCurrentLocation(true)
+                    .setResultOnBackPressed(true)
+                    .setCallbacks(object : EasyLocationCallbacks{
+                        override fun onSuccess(location: SelectedLocation?) {
+                            Toast.makeText(this@TestLocationActivity,location.toString(),Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onFailed(reason: String?) {
+                            Toast.makeText(this@TestLocationActivity,reason,Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                    .build()
+...
+
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        easyLocation!!.onActivityResult(requestCode,resultCode,data)
+    }
+    
 ```
 
 

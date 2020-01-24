@@ -5,9 +5,13 @@ import android.os.Parcelable;
 
 public class SelectedLocation implements Parcelable {
 
+    /** selected location latitude*/
     private double selectedLatitude;
+    /** selected location longitude*/
     private double selectedLongitude;
+    /** geo coded location address*/
     private String selectedAddress;
+    /** was location obtained from gps*/
     private boolean isGPSLocation;
 
     public SelectedLocation() {

@@ -32,7 +32,7 @@ public class EasyLocation implements Parcelable {
         setUseGeoCoder(builder.useGeoCoder);
         setCallbacks(builder.callbacks);
         setSetResultOnBackPressed(builder.setResultOnBackPressed);
-        setShowConfirmDialog(builder.showConfirmDialog);
+        //setShowConfirmDialog(builder.showConfirmDialog);
 
         openActivity(this);
     }
@@ -58,29 +58,29 @@ public class EasyLocation implements Parcelable {
     };
 
     private void openActivity(EasyLocation easyLocation) {
-        if (!Utils.isMapsKeyAvailable(getContext())){
+        if (!Utils.isMapsKeyAvailable(getContext())) {
             //no maps key in apps manifest
-            if (callbacks !=null){
-                String reason  = getContext().getString(R.string.easylocation_no_map_keys);
+            if (callbacks != null) {
+                String reason = getContext().getString(R.string.easylocation_no_map_keys);
                 callbacks.onFailed(reason);
-            }else {
+            } else {
                 Toast.makeText(context, R.string.easylocation_no_map_keys, Toast.LENGTH_SHORT).show();
             }
-        }else if (TextUtils.isEmpty(easyLocation.placesApiKey)){
+        } else if (TextUtils.isEmpty(easyLocation.placesApiKey)) {
             //supplied places api key is empty
-            if (callbacks !=null){
-                String reason  = getContext().getString(R.string.easylocation_empty_places_api_key);
+            if (callbacks != null) {
+                String reason = getContext().getString(R.string.easylocation_empty_places_api_key);
                 callbacks.onFailed(reason);
-            }else {
+            } else {
                 Toast.makeText(context, R.string.easylocation_empty_places_api_key, Toast.LENGTH_SHORT).show();
             }
-        }else {
+        } else {
 
-            Intent intent = new Intent(getContext(),EasyLocationPickerActivity.class);
-            intent.putExtra(EXTRA_LOCATION_PICKER,easyLocation);
+            Intent intent = new Intent(getContext(), EasyLocationPickerActivity.class);
+            intent.putExtra(EXTRA_LOCATION_PICKER, easyLocation);
             Activity activity = (Activity) getContext();
             //getContext().startActivity(intent);
-            activity.startActivityForResult(intent,LOCATION_REQUEST_CODE);
+            activity.startActivityForResult(intent, LOCATION_REQUEST_CODE);
 
         }
 
@@ -156,15 +156,18 @@ public class EasyLocation implements Parcelable {
         dest.writeByte((byte) (showConfirmDialog ? 1 : 0));
     }
 
+    /**
+     * Process location selection results and fire appropriate callbacks
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         //todo handle when callbacks is null
 
         //check intent data
-        if (data == null){
+        if (data == null) {
 
-            if (callbacks !=null){
-                String reason  = getContext().getString(R.string.easylocation_load_location_error);
+            if (callbacks != null) {
+                String reason = getContext().getString(R.string.easylocation_load_location_error);
                 callbacks.onFailed(reason);
             }
 
@@ -173,34 +176,32 @@ public class EasyLocation implements Parcelable {
 
 
         //get location
-        if (requestCode == EasyLocationPickerActivity.LOCATION_REQUEST_CODE){
+        if (requestCode == EasyLocationPickerActivity.LOCATION_REQUEST_CODE) {
 
-            if (resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 //location results received
 
-                if (callbacks !=null){
+                if (callbacks != null) {
 
-                    if (data.hasExtra(EXTRA_LOCATION_RESULTS_SUCCESS)){
+                    if (data.hasExtra(EXTRA_LOCATION_RESULTS_SUCCESS)) {
                         SelectedLocation selectedLocation = data.getParcelableExtra(EXTRA_LOCATION_RESULTS_SUCCESS);
                         callbacks.onSuccess(selectedLocation);
-                    }else {
+                    } else {
 
-                        String reason  = getContext().getString(R.string.easylocation_load_location_error);
+                        String reason = getContext().getString(R.string.easylocation_load_location_error);
                         callbacks.onFailed(reason);
                     }
 
                 }
-            }
-
-            else {
+            } else {
                 //location not received
-                if (callbacks !=null){
+                if (callbacks != null) {
 
                     String reason;
 
-                    if (data.hasExtra(EXTRA_LOCATION_RESULTS_FAILED)){
+                    if (data.hasExtra(EXTRA_LOCATION_RESULTS_FAILED)) {
                         reason = data.getStringExtra(EXTRA_LOCATION_RESULTS_FAILED);
-                    }else {
+                    } else {
                         reason = getContext().getString(R.string.easylocation_load_location_error);
                     }
 
@@ -217,7 +218,7 @@ public class EasyLocation implements Parcelable {
         private boolean showCurrentLocation = true;
         private boolean useGeoCoder = true;
         private boolean setResultOnBackPressed;
-        private boolean showConfirmDialog;
+        //private boolean showConfirmDialog;
         private EasyLocationCallbacks callbacks;
 
         public Builder(Context ctx, String googlePlacesApiKey) {
@@ -225,26 +226,35 @@ public class EasyLocation implements Parcelable {
             placesApiKey = googlePlacesApiKey;
         }
 
-       /* public Builder placesApiKey(String val) {
-            placesApiKey = val;
-            return this;
-        }*/
 
+        /**
+         * Get user current location and set on the map as default location
+         */
         public Builder showCurrentLocation(boolean val) {
             showCurrentLocation = val;
             return this;
         }
 
+        /**
+         * Geo code selected gps coordinates to human readable format
+         * i.e address, street, town, country
+         */
         public Builder useGeoCoder(boolean val) {
             useGeoCoder = val;
             return this;
         }
 
+        /**
+         * Call back to receive back results
+         */
         public Builder setCallbacks(EasyLocationCallbacks val) {
             callbacks = val;
             return this;
         }
 
+        /**
+         * Return available location results when user clicks back canceling location selection
+         */
         public Builder setResultOnBackPressed(boolean val) {
             setResultOnBackPressed = val;
             return this;

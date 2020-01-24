@@ -30,6 +30,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Arrays;
+import java.util.Timer;
 
 import mumayank.com.airlocationlibrary.AirLocation;
 
@@ -45,8 +46,6 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
     private GoogleMap mMap;
 
     public static final int LOCATION_REQUEST_CODE = 418;
-    public static final String EXTRA_LATITUDE =  "EXTRA_LATITUDE_DATA";
-    public static final String EXTRA_LONGITUDE = "EXTRA_LONGITUDE_DATA";
 
     /* 1 -> get current location when activity starts
      *  2 -> get current location when location button clicked
@@ -178,19 +177,12 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         if (midLatLng !=null){
             //todo show dialog to confirm selected location
 
-            //intent.putExtra(EXTRA_LATITUDE, String.valueOf(midLatLng.latitude));
-            //intent.putExtra(EXTRA_LONGITUDE, String.valueOf(midLatLng.longitude));
-
+            Toast.makeText(this, midLatLng.toString(), Toast.LENGTH_SHORT).show();
             SelectedLocation selectedLocation = new SelectedLocation();
             selectedLocation.setSelectedAddress(currentAddress);
             selectedLocation.setSelectedLatitude(midLatLng.latitude);
             selectedLocation.setSelectedLongitude(midLatLng.longitude);
             selectedLocation.setGPSLocation(isGPSPosition(midLatLng,myCurrentLocation));
-
-            //todo calculate distance from the 2 points
-            Log.i("LOC","current == "+myCurrentLocation.getLatitude() + " : "+myCurrentLocation.getLongitude());
-            Log.i("LOC","selecte == "+midLatLng.latitude + " : "+midLatLng.longitude);
-
 
             Intent intent = new Intent();
             intent.putExtra(EXTRA_LOCATION_RESULTS_SUCCESS,selectedLocation);
@@ -243,15 +235,6 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 16));
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;

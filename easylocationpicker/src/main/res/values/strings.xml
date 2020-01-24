@@ -3,7 +3,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_location_picker">Map</string>
 
-    <string name="easylocation_app_name" translatable="false" tools:ignore="UnusedResources">Leku</string>
+    <string name="easylocation_app_name" translatable="false" tools:ignore="UnusedResources">Location Picker</string>
     <string name="easylocation_title_activity_location_picker" tools:ignore="UnusedResources">Location Picker</string>
     <string name="easylocation_no_geocoder_available">Service not available</string>
     <string name="easylocation_load_location_error">Something went wrong. Please try again.</string>

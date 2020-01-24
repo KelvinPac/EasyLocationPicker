@@ -20,9 +20,9 @@ An Android library helps you pick user location easily via a callback
 
 |   |  |
 | ------------- | ------------- |
-| ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s1.png "Logo")  | ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s2.png "Logo")  |
-| ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s3.png "Logo")  | ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s4.png "Logo")  |
-| ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s5.png "Logo")  | ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s6.png "Logo")  |
+| ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s1.jpg "Logo")  | ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s2.jpg "Logo")  |
+| ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s3.jpg "Logo")  | ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s4.jpg "Logo")  |
+| ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s5.jpg "Logo")  | ![alt text](https://github.com/KelvinPac/EasyLocationPicker/blob/master/github_assets/s6.jpg "Logo")  |
 
 # Usage
 

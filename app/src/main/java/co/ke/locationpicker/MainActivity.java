@@ -1,6 +1,7 @@
 package co.ke.locationpicker;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,15 +24,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final Location loc = new Location("dummyprovider");
+        loc.setLatitude(-0.533);
+        loc.setLongitude(37.45);
+
         Button pickLocationBtn = findViewById(R.id.btnPickLocation);
         pickLocationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                easyLocation = new EasyLocation.Builder(MainActivity.this,"<PLACES_API_KEY>")
+                easyLocation = new EasyLocation.Builder(MainActivity.this,"AIzaSyALzTDX4AcHzrSZYPsuUsfdUwExQPCYlRc")
                         .showCurrentLocation(true)
                         .useGeoCoder(true)
                         .setResultOnBackPressed(false)
+                        .withLocation(loc)
                         .setCallbacks(new EasyLocationCallbacks() {
                             @Override
                             public void onSuccess(SelectedLocation location) {

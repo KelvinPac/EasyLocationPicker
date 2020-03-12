@@ -3,10 +3,13 @@ package com.loginext.easylocationpicker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import static android.app.Activity.RESULT_OK;
 import static com.loginext.easylocationpicker.Constants.EXTRA_LOCATION_PICKER;
@@ -21,8 +24,10 @@ public class EasyLocation implements Parcelable {
     private boolean showCurrentLocation;
     private boolean useGeoCoder;
     private boolean setResultOnBackPressed;
-    private boolean showConfirmDialog;
+    private Location location;
     private EasyLocationCallbacks callbacks;
+    private Activity activity;
+    private Fragment fragment;
 
 
     private EasyLocation(Builder builder) {
@@ -32,17 +37,34 @@ public class EasyLocation implements Parcelable {
         setUseGeoCoder(builder.useGeoCoder);
         setCallbacks(builder.callbacks);
         setSetResultOnBackPressed(builder.setResultOnBackPressed);
-        //setShowConfirmDialog(builder.showConfirmDialog);
+        setLocation(builder.location);
+        setActivity(builder.activity);
+        setFragment(builder.fragment);
 
         openActivity(this);
     }
+
 
     protected EasyLocation(Parcel in) {
         placesApiKey = in.readString();
         showCurrentLocation = in.readByte() != 0;
         useGeoCoder = in.readByte() != 0;
         setResultOnBackPressed = in.readByte() != 0;
-        showConfirmDialog = in.readByte() != 0;
+        location = in.readParcelable(Location.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(placesApiKey);
+        dest.writeByte((byte) (showCurrentLocation ? 1 : 0));
+        dest.writeByte((byte) (useGeoCoder ? 1 : 0));
+        dest.writeByte((byte) (setResultOnBackPressed ? 1 : 0));
+        dest.writeParcelable(location, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<EasyLocation> CREATOR = new Creator<EasyLocation>() {
@@ -78,9 +100,13 @@ public class EasyLocation implements Parcelable {
 
             Intent intent = new Intent(getContext(), EasyLocationPickerActivity.class);
             intent.putExtra(EXTRA_LOCATION_PICKER, easyLocation);
-            Activity activity = (Activity) getContext();
-            //getContext().startActivity(intent);
-            activity.startActivityForResult(intent, LOCATION_REQUEST_CODE);
+            if (activity !=null){
+                activity.startActivityForResult(intent,LOCATION_REQUEST_CODE);
+            }else if (fragment !=null){
+                fragment.startActivityForResult(intent,LOCATION_REQUEST_CODE);
+            }else {
+                Toast.makeText(context, "Can't find fragment or activity", Toast.LENGTH_SHORT).show();
+            }
 
         }
 
@@ -134,26 +160,28 @@ public class EasyLocation implements Parcelable {
         this.setResultOnBackPressed = setResultOnBackPressed;
     }
 
-    protected boolean isShowConfirmDialog() {
-        return showConfirmDialog;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
-    private void setShowConfirmDialog(boolean showConfirmDialog) {
-        this.showConfirmDialog = showConfirmDialog;
+    public Location getLocation() {
+        return location;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public Activity getActivity() {
+        return activity;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(placesApiKey);
-        dest.writeByte((byte) (showCurrentLocation ? 1 : 0));
-        dest.writeByte((byte) (useGeoCoder ? 1 : 0));
-        dest.writeByte((byte) (setResultOnBackPressed ? 1 : 0));
-        dest.writeByte((byte) (showConfirmDialog ? 1 : 0));
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public Fragment getFragment() {
+        return fragment;
+    }
+
+    public void setFragment(Fragment fragment) {
+        this.fragment = fragment;
     }
 
     /**
@@ -215,14 +243,23 @@ public class EasyLocation implements Parcelable {
     public static class Builder {
         private String placesApiKey;
         private Context context;
+        private Activity activity;
+        private Fragment fragment;
         private boolean showCurrentLocation = true;
         private boolean useGeoCoder = true;
         private boolean setResultOnBackPressed;
-        //private boolean showConfirmDialog;
+        private Location location;
         private EasyLocationCallbacks callbacks;
 
-        public Builder(Context ctx, String googlePlacesApiKey) {
-            context = ctx;
+        public Builder(Activity activity, String googlePlacesApiKey) {
+            this.activity = activity;
+            this.context = activity;
+            placesApiKey = googlePlacesApiKey;
+        }
+
+        public Builder(Fragment fragment, String googlePlacesApiKey) {
+            this.fragment = fragment;
+            this.context = fragment.getActivity();
             placesApiKey = googlePlacesApiKey;
         }
 
@@ -260,10 +297,12 @@ public class EasyLocation implements Parcelable {
             return this;
         }
 
-        /*public Builder showConfirmDialog(boolean val) {
-            showConfirmDialog = val;
+        /**
+        * Use this as default location. If available it overrides @ showCurrentLocation */
+        public Builder withLocation(Location val) {
+            location = val;
             return this;
-        }*/
+        }
 
         public EasyLocation build() {
             return new EasyLocation(this);

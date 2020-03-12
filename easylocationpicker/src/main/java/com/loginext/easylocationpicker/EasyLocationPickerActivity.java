@@ -30,7 +30,6 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Arrays;
-import java.util.Timer;
 
 import mumayank.com.airlocationlibrary.AirLocation;
 
@@ -153,12 +152,15 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         });
 
 
-        if (easyLocation.isShowCurrentLocation()){
-            //get current user location
-            getCurrentLocation();
-        }else {
-            floatingActionButtonLocation.setVisibility(View.GONE);
+        if (easyLocation.getLocation() == null){
+            if (easyLocation.isShowCurrentLocation()){
+                //get current user location
+                getCurrentLocation();
+            }else {
+                floatingActionButtonLocation.setVisibility(View.GONE);
+            }
         }
+
     }
 
     @Override
@@ -177,7 +179,6 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         if (midLatLng !=null){
             //todo show dialog to confirm selected location
 
-            Toast.makeText(this, midLatLng.toString(), Toast.LENGTH_SHORT).show();
             SelectedLocation selectedLocation = new SelectedLocation();
             selectedLocation.setSelectedAddress(currentAddress);
             selectedLocation.setSelectedLatitude(midLatLng.latitude);
@@ -239,7 +240,10 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap.animateCamera(zoomingLocation());
+        if (easyLocation.getLocation() !=null){
+            mMap.animateCamera(zoomingLocation(easyLocation.getLocation()));
+        }
+
 
         //listen for map interactions
         mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
@@ -307,8 +311,8 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         startService(intent);
     }
 
-    private CameraUpdate zoomingLocation() {
-        return CameraUpdateFactory.newLatLngZoom(new LatLng(-1.2833, 36.8167), 13);
+    private CameraUpdate zoomingLocation(Location location) {
+        return CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13);
     }
 
     // override and call airLocation object's method by the same name

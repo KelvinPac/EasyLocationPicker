@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 + Everytime you want to fetch user's current location, simply initialize `easyLocation` variable:
 + Customize the builder as per your request
 ```java
-   easyLocation = new EasyLocation.Builder(MainActivity.this,"<PLACES_API_KEY>")
+   easyLocation = new EasyLocation.Builder(this,"<PLACES_API_KEY>")
                         .showCurrentLocation(true)
                         .useGeoCoder(true)
                         .setResultOnBackPressed(false)

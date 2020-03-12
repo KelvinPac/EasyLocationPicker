@@ -1,4 +1,8 @@
+apply plugin: 'maven-publish'
 apply plugin: 'com.android.library'
+
+def artifactId = 'easylocationpicker'
+def groupId = 'co.ke.locationpicker'
 
 android {
     compileSdkVersion 29
@@ -35,12 +39,26 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.libraries.places:places:2.0.0'
-    implementation 'com.google.android.material:material:1.1.0-beta01'
+    implementation 'com.google.android.libraries.places:places:2.2.0'
+    implementation 'com.google.android.material:material:1.1.0'
     //AirLocation
     implementation 'com.github.mumayank:AirLocation:1.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            library(MavenPublication) {
+                setGroupId groupId
+                setArtifactId artifactId
+                version android.defaultConfig.versionName
+
+                artifact bundleReleaseAar
+            }
+        }
+    }
 }

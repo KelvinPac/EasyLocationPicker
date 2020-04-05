@@ -38,7 +38,7 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        EasyLocation easyLocation = new EasyLocation.Builder(this,"AIzaSyALzTDX4AcHzrSZYPsuUsfdUwExQPCYlRc")
+        EasyLocation easyLocation = new EasyLocation.Builder(this,"")
                 .showCurrentLocation(true)
                 .useGeoCoder(true)
                 .setResultOnBackPressed(false)

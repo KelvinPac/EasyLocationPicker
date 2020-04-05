@@ -6,7 +6,7 @@ def groupId = 'co.ke.locationpicker'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.1"
+    buildToolsVersion "29.0.3"
 
 
     defaultConfig {

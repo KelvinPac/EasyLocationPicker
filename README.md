@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                         .showCurrentLocation(true)
                         .useGeoCoder(true)
                         .setResultOnBackPressed(false)
+                        .withLocation(location) //you can now provide map location
                         .setCallbacks(new EasyLocationCallbacks() {
                             @Override
                             public void onSuccess(SelectedLocation location) {

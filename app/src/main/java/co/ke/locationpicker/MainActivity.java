@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                easyLocation = new EasyLocation.Builder(MainActivity.this,"AIzaSyALzTDX4AcHzrSZYPsuUsfdUwExQPCYlRc")
+                easyLocation = new EasyLocation.Builder(MainActivity.this,"")
                         .showCurrentLocation(true)
                         .useGeoCoder(true)
                         .setResultOnBackPressed(false)

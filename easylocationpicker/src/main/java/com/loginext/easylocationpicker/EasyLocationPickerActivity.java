@@ -42,6 +42,7 @@ import static com.loginext.easylocationpicker.DistanceCalculator.isGPSPosition;
 public class EasyLocationPickerActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private static final String TAG = EasyLocationPickerActivity.class.getSimpleName();
+    private static final int MAP_ZOOM_DEFAULT = 16;
     private GoogleMap mMap;
 
     public static final int LOCATION_REQUEST_CODE = 418;
@@ -233,7 +234,7 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
      * show new user location on map*/
     private void newLocationSelected(LatLng selectedPlace) {
         mMap.clear();
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, 16));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedPlace, MAP_ZOOM_DEFAULT));
     }
 
     @Override
@@ -312,7 +313,7 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
     }
 
     private CameraUpdate zoomingLocation(Location location) {
-        return CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13);
+        return CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), MAP_ZOOM_DEFAULT);
     }
 
     // override and call airLocation object's method by the same name

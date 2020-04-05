@@ -320,7 +320,9 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        airLocation.onActivityResult(requestCode, resultCode, data);
+        if (airLocation !=null){
+            airLocation.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     // override and call airLocation object's method by the same name

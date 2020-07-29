@@ -126,7 +126,7 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         // Specify the types of place data to return.
         assert autocompleteFragment != null;
         //todo remove and add dynamically
-        autocompleteFragment.setCountry("ke");
+        //autocompleteFragment.setCountry("ke");
         autocompleteFragment.setPlaceFields(Arrays.asList(
                 Place.Field.ID,
                 Place.Field.NAME,
@@ -259,7 +259,7 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
                         getGeoCoderAddress(midLatLng);
                     } else {
                         showCoordinatesOnly();
-                        Toast.makeText(EasyLocationPickerActivity.this, R.string.easylocation_no_geocoder_available, Toast.LENGTH_SHORT).show();
+                        showToast(R.string.easylocation_no_geocoder_available);
                     }
                 }else {
                     //show coordinates
@@ -333,10 +333,6 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
 
     }
 
-    public void text(View view) {
-        Toast.makeText(this, "hello", Toast.LENGTH_SHORT).show();
-    }
-
     private void displayAddressOutput(String addressOutput) {
         locationTitle.setText(R.string.easylocation_address);
         address.setText(addressOutput);
@@ -349,7 +345,13 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
     }
 
     private void showToast(String string) {
-        Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
+        Log.d(TAG,string);
+       // Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
+    }
+
+    private void showToast(int resources) {
+        Log.d(TAG,getResources().getString(resources));
+        //Toast.makeText(this, getResources().getString(resources), Toast.LENGTH_SHORT).show();
     }
 
     //show data from getting address service

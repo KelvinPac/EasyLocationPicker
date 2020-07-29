@@ -21,27 +21,12 @@
 
     <ImageView
         android:tint="@color/quantum_vanillared500"
-        android:onClick="text"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/easylocation_ic_current_place"
         android:contentDescription="Current Location Marker" />
 
-    <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_gravity="center"
-         android:layout_marginEnd="16dp"
-         android:layout_marginBottom="16dp"
-         android:src="@drawable/leku_ic_gps_lime"
-         app:tint="@color/colorPrimary"
-         app:backgroundTint="@color/leku_white"
-         app:elevation="2dp"
-         app:fabSize="mini"
-         app:rippleColor="@color/leku_soft_grey"
-         tools:background="@color/leku_white"
-         tools:ignore="elevation" />-->
 
     <LinearLayout
         android:layout_width="match_parent"

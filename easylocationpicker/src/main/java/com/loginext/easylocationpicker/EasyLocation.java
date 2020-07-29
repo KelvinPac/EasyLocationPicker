@@ -7,7 +7,6 @@ import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -85,16 +84,12 @@ public class EasyLocation implements Parcelable {
             if (callbacks != null) {
                 String reason = getContext().getString(R.string.easylocation_no_map_keys);
                 callbacks.onFailed(reason);
-            } else {
-                Toast.makeText(context, R.string.easylocation_no_map_keys, Toast.LENGTH_SHORT).show();
             }
         } else if (TextUtils.isEmpty(easyLocation.placesApiKey)) {
             //supplied places api key is empty
             if (callbacks != null) {
                 String reason = getContext().getString(R.string.easylocation_empty_places_api_key);
                 callbacks.onFailed(reason);
-            } else {
-                Toast.makeText(context, R.string.easylocation_empty_places_api_key, Toast.LENGTH_SHORT).show();
             }
         } else {
 
@@ -104,8 +99,6 @@ public class EasyLocation implements Parcelable {
                 activity.startActivityForResult(intent,LOCATION_REQUEST_CODE);
             }else if (fragment !=null){
                 fragment.startActivityForResult(intent,LOCATION_REQUEST_CODE);
-            }else {
-                Toast.makeText(context, "Can't find fragment or activity", Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -215,7 +208,6 @@ public class EasyLocation implements Parcelable {
                         SelectedLocation selectedLocation = data.getParcelableExtra(EXTRA_LOCATION_RESULTS_SUCCESS);
                         callbacks.onSuccess(selectedLocation);
                     } else {
-
                         String reason = getContext().getString(R.string.easylocation_load_location_error);
                         callbacks.onFailed(reason);
                     }

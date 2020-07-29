@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                         .showCurrentLocation(true)
                         .useGeoCoder(true)
                         .setResultOnBackPressed(false)
-                        .withLocation(loc)
+                        //.withLocation(loc)
                         .setCallbacks(new EasyLocationCallbacks() {
                             @Override
                             public void onSuccess(SelectedLocation location) {

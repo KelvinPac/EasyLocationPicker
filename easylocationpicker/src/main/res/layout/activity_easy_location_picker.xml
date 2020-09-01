@@ -20,12 +20,12 @@
 
 
     <ImageView
-        android:tint="@color/quantum_vanillared500"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/easylocation_ic_current_place"
-        android:contentDescription="Current Location Marker" />
+        android:contentDescription="Current Location Marker"
+        app:tint="@color/quantum_vanillared500" />
 
 
     <LinearLayout

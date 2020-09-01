@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -147,8 +146,7 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
             @Override
             public void onError(@NonNull Status status) {
                 // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: " + status);
-                Toast.makeText(EasyLocationPickerActivity.this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "An error occurred: " + status);
             }
         });
 
@@ -259,7 +257,7 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
                         getGeoCoderAddress(midLatLng);
                     } else {
                         showCoordinatesOnly();
-                        showToast(R.string.easylocation_no_geocoder_available);
+                        showLog(R.string.easylocation_no_geocoder_available);
                     }
                 }else {
                     //show coordinates
@@ -292,7 +290,6 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                // Toast.makeText(EasyLocationPickerActivity.this, " "+latLng.toString(), Toast.LENGTH_SHORT).show();
                 //move camera to new user selected position
                 newLocationSelected(latLng);
             }
@@ -344,14 +341,12 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
         address.setVisibility(View.VISIBLE);
     }
 
-    private void showToast(String string) {
+    private void showLog(String string) {
         Log.d(TAG,string);
-       // Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
     }
 
-    private void showToast(int resources) {
+    private void showLog(int resources) {
         Log.d(TAG,getResources().getString(resources));
-        //Toast.makeText(this, getResources().getString(resources), Toast.LENGTH_SHORT).show();
     }
 
     //show data from getting address service
@@ -386,7 +381,7 @@ public class EasyLocationPickerActivity extends FragmentActivity implements OnMa
                 //show location position as we fetch address
                 showCoordinatesOnly();
 
-                showToast(addressOutput);
+                showLog(addressOutput);
             }
 
         }

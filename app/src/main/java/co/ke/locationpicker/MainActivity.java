@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.loginext.easylocationpicker.EasyLocation;
 import com.loginext.easylocationpicker.EasyLocationCallbacks;
+import com.loginext.easylocationpicker.GeoCoderLocationCallbacks;
 import com.loginext.easylocationpicker.SelectedLocation;
 
 
@@ -53,12 +54,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        getGeoCoder();
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         easyLocation.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void getGeoCoder(){
+
+        final Location loc = new Location("dummyprovider");
+        loc.setLatitude(-0.533);
+        loc.setLongitude(37.45);
+
+
+        easyLocation = new EasyLocation.GeoCoderBuilder(this,loc, new GeoCoderLocationCallbacks() {
+            @Override
+            public void onSuccess(String location) {
+                Toast.makeText(MainActivity.this, "success : "+location, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailed(String reason) {
+                Toast.makeText(MainActivity.this, "error : "+reason, Toast.LENGTH_SHORT).show();
+            }
+        }).build();
     }
 
 }

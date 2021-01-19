@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -28,6 +29,7 @@ public class EasyLocation implements Parcelable {
     private Activity activity;
     private Fragment fragment;
 
+    private AddressResultReceiver2 resultReceiver;
 
     private EasyLocation(Builder builder) {
         setPlacesApiKey(builder.placesApiKey);
@@ -41,6 +43,19 @@ public class EasyLocation implements Parcelable {
         setFragment(builder.fragment);
 
         openActivity(this);
+    }
+
+    private EasyLocation(GeoCoderBuilder builder) {
+
+        resultReceiver = new AddressResultReceiver2(new Handler());
+        resultReceiver.setCallBacks(builder.callbacks);
+
+        //https://developer.android.com/training/location/display-address#java
+        Intent intent = new Intent(builder.context, FetchAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, resultReceiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, builder.location);
+        builder.context.startService(intent);
+
     }
 
 
@@ -295,6 +310,24 @@ public class EasyLocation implements Parcelable {
             location = val;
             return this;
         }
+
+        public EasyLocation build() {
+            return new EasyLocation(this);
+        }
+    }
+
+    public static class GeoCoderBuilder {
+
+        private Location location;
+        private Context context;
+        private GeoCoderLocationCallbacks callbacks;
+
+        public GeoCoderBuilder(Context context, Location location, GeoCoderLocationCallbacks callbacks) {
+            this.context = context;
+            this.location = location;
+            this.callbacks = callbacks;
+        }
+
 
         public EasyLocation build() {
             return new EasyLocation(this);
